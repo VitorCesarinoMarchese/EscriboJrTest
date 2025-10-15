@@ -33,3 +33,7 @@ CREATE POLICY "clients_user_can_insert" ON client
 
 CREATE POLICY "clients_user_can_update" ON client
   FOR UPDATE USING (client_uid = auth.uid());
+
+
+CREATE UNIQUE INDEX idx_client_email ON client(email);
+CREATE INDEX idx_client_client_uid ON client(client_uid);

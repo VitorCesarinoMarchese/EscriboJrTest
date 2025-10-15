@@ -40,3 +40,8 @@ CREATE POLICY "orders_user_can_insert" ON "order"
 
 CREATE POLICY "orders_user_can_update" ON "order"
   FOR UPDATE USING (client_id IN (SELECT id FROM client WHERE client_uid = auth.uid()));
+
+
+CREATE INDEX idx_order_client_id ON "order"(client_id);
+CREATE INDEX idx_order_status ON "order"(status);
+CREATE INDEX idx_order_order_date ON "order"(order_date);

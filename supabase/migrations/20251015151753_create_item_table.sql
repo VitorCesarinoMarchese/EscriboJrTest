@@ -13,3 +13,5 @@ BEFORE UPDATE ON item
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+CREATE INDEX idx_item_order_id ON item(order_id);
+CREATE INDEX idx_item_product_id ON item(product_id);
