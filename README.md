@@ -1,6 +1,6 @@
 # EscriboJrTest
 
-O objetivo do projeto e desenvolver um sistema de e-commerce com tabelas para gerenciar clientes, produtos e pedidos
+O objetivo do projeto é desenvolver um sistema de e-commerce com tabelas para gerenciar clientes, produtos e pedidos, **com controle de acesso usando Row Level Security (RLS) no Supabase**.
 
 ## Schema
 
@@ -13,6 +13,7 @@ O objetivo do projeto e desenvolver um sistema de e-commerce com tabelas para ge
 | Campo          | Tipo          | Descrição                                                                                                                                                                          |
 | -------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **id**         | `uuid`        | Identificador único do cliente (chave primária). Usando UUID para garantir unicidade global, maior segurança e facilidade de integração com sistemas distribuídos.                 |
+| **client_uid** | `uuid`        | Relaciona o cliente ao usuário do Supabase Auth. Essencial para RLS: permite que cada usuário acesse apenas seus próprios registros.                                               |
 | **name**       | `text`        | Nome completo do cliente.                                                                                                                                                          |
 | **email**      | `text`        | Endereço de e-mail do cliente (deve ser único no sistema).                                                                                                                         |
 | **address**    | `text`        | Endereço físico ou principal do cliente.                                                                                                                                           |
@@ -42,7 +43,7 @@ O objetivo do projeto e desenvolver um sistema de e-commerce com tabelas para ge
 | **id**         | `uuid`          | Identificador único do produto (chave primária).                                                                                                                               |
 | **name**       | `text`          | Nome do produto.                                                                                                                                                               |
 | **price**      | `numeric(10,2)` | Preço do produto.                                                                                                                                                              |
-| **category**   | `text`          | Categoria do produto. Pode ser livre (`text`) se não houver um conjunto fixo de categorias, mas considerar criar um **enum** se futuramente for necessario limitar os valores. |
+| **category**   | `text`          | Categoria do produto. Pode ser livre (`text`) se não houver um conjunto fixo de categorias, mas considerar criar um **enum** se futuramente for necessário limitar os valores. |
 | **stock**      | `integer`       | Quantidade disponível em estoque.                                                                                                                                              |
 | **created_at** | `timestamptz`   | Data e hora de criação do registro do produto.                                                                                                                                 |
 | **updated_at** | `timestamptz`   | Data e hora da última atualização do produto.                                                                                                                                  |
