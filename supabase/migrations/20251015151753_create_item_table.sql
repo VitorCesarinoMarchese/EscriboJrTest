@@ -13,5 +13,17 @@ BEFORE UPDATE ON item
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
+ALTER TABLE "order" ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "orders_user_is_owner" ON "item"
+  FOR SELECT USING (client_id IN (SELECT id FROM client WHERE client_uid = auth.uid()));
+
+CREATE POLICY "orders_user_can_insert" ON "item"
+  FOR INSERT WITH CHECK (client_id IN (SELECT id FROM client WHERE client_uid = auth.uid()));
+
+CREATE POLICY "orders_user_can_update" ON "item"
+  FOR UPDATE USING (client_id IN (SELECT id FROM client WHERE client_uid = auth.uid()));
+
+
 CREATE INDEX idx_item_order_id ON item(order_id);
 CREATE INDEX idx_item_product_id ON item(product_id);
