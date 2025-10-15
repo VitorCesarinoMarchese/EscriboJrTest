@@ -1,12 +1,10 @@
 # EscriboJrTest
 
-# Database
-
 O objetivo do projeto e desenvolver um sistema de e-commerce com tabelas para gerenciar clientes, produtos e pedidos
 
 ## Schema
 
-![image.png](attachment:d4be4db0-69cf-4b6c-8ea0-a7eee6128baf:image.png)
+![Database schema](./imgs/database_schema.png)
 
 ## Tabelas
 
@@ -60,4 +58,3 @@ O objetivo do projeto e desenvolver um sistema de e-commerce com tabelas para ge
 | **total**      | `numeric(10,2)` | Valor total deste item (`amount * preço do produto`).                                |
 | **created_at** | `timestamptz`   | Data e hora de criação do registro do item.                                          |
 | **updated_at** | `timestamptz`   | Data e hora da última atualização do item.                                           |
-
