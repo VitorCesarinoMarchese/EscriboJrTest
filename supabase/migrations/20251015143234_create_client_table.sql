@@ -34,6 +34,13 @@ CREATE POLICY "clients_user_can_insert" ON client
 CREATE POLICY "clients_user_can_update" ON client
   FOR UPDATE USING (client_uid = auth.uid());
 
+CREATE POLICY "clients_user_can_delete" ON client
+  FOR DELETE USING (client_uid = auth.uid());
+
+CREATE POLICY "clients_service_full_access" ON client
+  FOR ALL
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
 
 CREATE UNIQUE INDEX idx_client_email ON client(email);
 CREATE INDEX idx_client_client_uid ON client(client_uid);
