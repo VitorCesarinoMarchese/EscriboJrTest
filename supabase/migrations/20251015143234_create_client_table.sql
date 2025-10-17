@@ -10,16 +10,6 @@ CREATE TABLE client (
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );
--- VIEWS
-CREATE VIEW vw_clients_total_spends AS
-SELECT
-  c.id AS client_id,
-  c.name AS client,
-  SUM(o.total) AS total_spends
-FROM "order" o
-JOIN client c ON o.client_id = c.id
-GROUP BY c.id, c.name
-ORDER BY total_spends DESC;
 
 -- FUNCTIOS AND TRIGGERS
 CREATE OR REPLACE FUNCTION update_updated_at_column()

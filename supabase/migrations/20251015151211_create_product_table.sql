@@ -9,16 +9,7 @@ CREATE TABLE product (
   updated_at timestamptz DEFAULT now()
 );
 
--- VIEWS
-CREATE VIEW vw_best_selling_products AS
-SELECT
-  p.id AS product_id,
-  p.name AS prodct,
-  SUM(i.amount) AS total_sells
-FROM item i
-JOIN product p ON i.product_id = p.id
-GROUP BY p.id, p.name
-ORDER BY total_sells DESC;
+
 
 -- FUNCTIONS AND TRIGGERS
 CREATE TRIGGER product_updated_at

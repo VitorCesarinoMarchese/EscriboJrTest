@@ -11,6 +11,17 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
 
+type OrderProduct = {
+  name: string;
+  price: number;
+};
+
+type OrderItem = {
+  amount: number;
+  total: number;
+  product: OrderProduct[];
+};
+
 Deno.serve(async (req) => {
   try {
     const { orderId } = await req.json();
@@ -21,13 +32,25 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Fetch order details
     const { data: order, error } = await supabase
       .from("order")
-      .select(
-        "id, total, client:client_id(name, email), items(product_id, quantity, price)",
+      .select(`
+    id,
+    client: client_id(
+      name,
+      email
+    ),
+    order_date,
+    total,
+    item: item(
+      amount,
+      total,
+      product: product(
+        name,
+        price
       )
-      .eq("id", orderId)
+    )
+      `).eq("id", orderId)
       .single();
 
     if (error || !order) {
@@ -36,31 +59,30 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Compose email
     const emailBody = `
-      Hi ${order.client.name},
+      Ola ${order.client[0].name},
 
-      Thank you for your order #${order.id}!
-      Total: $${order.total}
+      Obrigado pelo seu pedido #${order.id}!
+      Valor total: $${order.total}
 
       Items:
       ${
-      order.items.map((i: any) =>
-        `- ${i.product_id}: ${i.quantity} x $${i.price}`
-      ).join("\n")
+      order.item.map((i: OrderItem) => {
+        const product = i.product[0];
+        return `- ${product.name}: ${i.amount} x $${product.price}`;
+      }).join("\n")
     }
 
-      Cheers,
-      Your Shop
+      Agradecimentos,
+      Loja
     `;
 
-    // Send email via Supabase SMTP / Postmark / SendGrid
     const { data: emailData, error: emailError } = await supabase.functions
       .invoke("send-email", {
         method: "POST",
         body: JSON.stringify({
-          to: order.client.email,
-          subject: `Order Confirmation #${order.id}`,
+          to: order.client[0].email,
+          subject: `Confirmação do pedido #${order.id}`,
           text: emailBody,
         }),
       });
@@ -73,7 +95,11 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    let message = "Unknown error";
+    if (err instanceof Error) {
+      message = err.message;
+    }
+    return new Response(JSON.stringify({ error: message }), {
       status: 500,
     });
   }
@@ -81,7 +107,7 @@ Deno.serve(async (req) => {
 
 /* To invoke locally:
 
-  1. Run `supabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
+  1. Run `s sudo pacman -U ./docker-desktop-x86_64.pkg.tar.zstupabase start` (see: https://supabase.com/docs/reference/cli/supabase-start)
   2. Make an HTTP request:
 
   curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/emailConfirmation' \

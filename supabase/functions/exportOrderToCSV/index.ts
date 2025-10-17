@@ -32,7 +32,7 @@ type Order = {
   id: string;
   order_date: string;
   total: number;
-  client: OrderClient; // array with 1 element
+  client: OrderClient;
   item: OrderItem[];
 };
 
@@ -47,7 +47,7 @@ type CsvData = {
   orderTotal: number;
 };
 
-Deno.serve(async (req) => {
+Deno.serve(async () => {
   try {
     const { data: orders, error } = await supabase
       .from("order")
@@ -74,10 +74,10 @@ Deno.serve(async (req) => {
     const csvData: CsvData[] = [];
 
     orders?.forEach((order: Order) => {
-      const client = order.client[0]; // take first element
+      const client = order.client[0];
 
       order.item.forEach((i: OrderItem) => {
-        const product = i.product[0]; // take first element
+        const product = i.product[0];
 
         csvData.push({
           orderId: order.id,

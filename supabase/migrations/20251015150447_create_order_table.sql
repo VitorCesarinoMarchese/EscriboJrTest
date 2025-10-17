@@ -27,23 +27,6 @@ CREATE TABLE "order" (
   updated_at timestamptz DEFAULT now()
 );
 
--- VIEWS
-CREATE VIEW vw_order_with_details AS
-SELECT
-  o.id AS order_id,
-  c.name AS client,
-  o.total,
-  json_agg(json_build_object(
-      'product', p.name,
-      'amount', i.amount,
-      'total', i.total
-  )) AS itens
-FROM "order" o
-JOIN client c ON o.client_id = c.id
-JOIN item i ON i.order_id = o.id
-JOIN product p ON i.product_id = p.id
-GROUP BY o.id, c.name, o.total;
-
 -- FUNCTIONS AND TRIGGERS
 CREATE OR REPLACE FUNCTION update_order_status(order_id uuid, new_status order_status)
 RETURNS void AS $$
