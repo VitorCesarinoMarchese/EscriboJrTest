@@ -9,8 +9,6 @@ CREATE TABLE product (
   updated_at timestamptz DEFAULT now()
 );
 
-
-
 -- FUNCTIONS AND TRIGGERS
 CREATE TRIGGER product_updated_at
 BEFORE UPDATE ON product
