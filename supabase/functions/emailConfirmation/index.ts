@@ -7,7 +7,6 @@ const supabase = createClient(
 
 Deno.serve(async (_req) => {
   try {
-    // Subscribe to inserts on the 'order' table
     const channel = supabase
       .channel("public:order")
       .on(

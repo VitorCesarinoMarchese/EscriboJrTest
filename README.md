@@ -2,6 +2,40 @@
 
 O objetivo do projeto é desenvolver um sistema de e-commerce com tabelas para gerenciar clientes, produtos e pedidos, **com controle de acesso usando Row Level Security (RLS) no Supabase**.
 
+## Como rodar localmente
+
+**requistos**: docker e supabase instalados na maquina
+
+1 -
+
+```bash
+git clone https://github.com/VitorCesarinoMarchese/EscriboJrTest.git
+```
+
+2 -
+
+```bash
+cd EscriboJrTest
+```
+
+3 -
+
+```bash
+npm i
+```
+
+4 -
+
+```bash
+npx supabase start
+```
+
+5 -
+
+```bash
+npx functions serve
+```
+
 ## Schema
 
 ![Database schema](./imgs/database_schema.png)
@@ -178,7 +212,7 @@ const res = await supabase.functions.invoke("emailConfirmation", {
 });
 ```
 
-1. exportOrderToCSV
+2. exportOrderToCSV
 
 - Propósito: Exporta pedidos/itens/cliente em CSV e retorna como `text/csv` com header `Content-Disposition: attachment; filename=orders.csv`.
 - Regras/observações:
@@ -206,7 +240,7 @@ URLs de produção / deploy
 
 - Local (CLI): <http://127.0.0.1:54321/functions/v1/><functionName>
 - Deploy no Supabase (padrão): https://<project>.functions.supabase.co/<functionName>
-  - Em muitos setups o path pode ser `https://<project>.functions.supabase.co/<functionName>` ou similar. Verifique no dashboard do seu projeto o endpoint final após o deploy.
+  - O path pode ser `https://<project>.functions.supabase.co/<functionName>` ou similar. Verifique no dashboard do projeto o endpoint final após o deploy.
 
 Cabeças importantes de segurança e configuração
 
