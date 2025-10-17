@@ -4,7 +4,7 @@ CREATE TABLE item (
   order_id uuid NOT NULL REFERENCES "order"(id) ON DELETE CASCADE,
   product_id uuid NOT NULL REFERENCES product(id),
   amount smallint NOT NULL,
-  total numeric(10,2) NULL,
+  total numeric(10,2),
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );

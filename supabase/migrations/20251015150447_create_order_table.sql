@@ -18,11 +18,11 @@ CREATE TYPE payment_method AS ENUM (
 CREATE TABLE "order" (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   client_id uuid NOT NULL REFERENCES client(id) ON DELETE CASCADE,
-  order_date timestamptz DEFAULT now(),
-  delivery_address text,
-  status order_status DEFAULT 'aguardando_pagamento',
-  payment_method payment_method,
-  total numeric(10,2) DEFAULT 0,
+  order_date timestamptz NOT NULL DEFAULT now(),
+  delivery_address text NOT NULL,
+  status order_status NOT NULL DEFAULT 'aguardando_pagamento',
+  payment_method payment_method NOT NULL,
+  total numeric(10,2) NOT NULL DEFAULT 0,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
 );

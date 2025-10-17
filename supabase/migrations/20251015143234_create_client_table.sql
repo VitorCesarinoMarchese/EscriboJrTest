@@ -5,7 +5,7 @@ CREATE TABLE client (
   name text NOT NULL,
   email text UNIQUE NOT NULL,
   address text,
-  is_active boolean DEFAULT true,
+  is_active boolean NOT NULL DEFAULT true ,
   birth_date date,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
